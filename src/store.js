@@ -5,6 +5,7 @@ class Store {
   constructor(initState = {}) {
     this.state = initState;
     this.listeners = []; // Слушатели изменений состояния
+    this.codeCounter = this.state.list.length
   }
 
   /**
@@ -39,12 +40,20 @@ class Store {
   }
 
   /**
+   * Генератор случайного числа
+   */
+  setCode() {
+    return this.codeCounter += 1
+  }
+
+
+  /**
    * Добавление новой записи
    */
   addItem() {
     this.setState({
       ...this.state,
-      list: [...this.state.list, {code: this.state.list.length + 1, title: 'Новая запись'}]
+      list: [...this.state.list, {code: this.setCode(), title: 'Новая запись', selectedCount: 0}]
     })
   };
 
@@ -63,12 +72,15 @@ class Store {
    * Выделение записи по коду
    * @param code
    */
-  selectItem(code) {
+  selectItem(code, selectedCount) {
     this.setState({
       ...this.state,
       list: this.state.list.map(item => {
         if (item.code === code) {
+          item.selected ? '' : item.selectedCount += 1
           item.selected = !item.selected;
+        } else {
+          item.selected = false;
         }
         return item;
       })
