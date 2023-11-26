@@ -26,3 +26,27 @@ export function createElement(name, props = {}, ...children) {
 
   return element;
 }
+
+
+// База используемых слов и их форм во множественном числе
+const words = [
+  {
+  value: 'раз',
+  variants: ['раз', 'раза'],
+  getVariant(num) {
+      if (String(num).slice(-2) >= 12 && String(num).slice(-2) <= 14) {
+          return this.variants[0]
+      } else if(String(num).slice(-1) >= 2 && String(num).slice(-1) <= 4) {
+          return this.variants[1]
+      } else {
+          return this.variants[0]
+      }
+  }
+}
+]
+
+// Функция, возвращающая слово, в зависимости от его формы множественного числа
+export function getWordForm(num, value) {
+  const word = words.filter(word => word.value === value)[0]
+  return word.getVariant(num)
+}

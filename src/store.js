@@ -5,7 +5,7 @@ class Store {
   constructor(initState = {}) {
     this.state = initState;
     this.listeners = []; // Слушатели изменений состояния
-    this.codeCounter = this.state.list.length
+    this.codeCounter = this.state.list.map(listItem => listItem.code).sort((a, b) => b - a)[0] // Берет самый большой код из начального списка
   }
 
   /**
